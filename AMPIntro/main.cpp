@@ -33,7 +33,7 @@ double vector_sum_perf(const string& algorithm_type, int size, int runs) {
 	unique_ptr<MatrixValue[]> A(new MatrixValue[size]);
 	unique_ptr<MatrixValue[]> B(new MatrixValue[size]);
 	unique_ptr<MatrixValue[]> C(new MatrixValue[size]);
-	
+
 	double acc_time = 0.0;
 
 	for (size_t i = 0; i < runs; i++) {
@@ -60,7 +60,7 @@ double matrix_multiply_scalar_perf(const string& algorithm_type, int size, int r
 	unique_ptr<MatrixValue[]> C(new MatrixValue[size_scaled * size_scaled]);
 	Matrix first{ size, size, A.get() };
 	Matrix result{ size, size, C.get() };
-	
+
 	double acc_time = 0.0;
 	for (size_t i = 0; i < runs; i++) {
 		Timer t;
@@ -129,25 +129,12 @@ bool pick_accelerator(size_t index) {
 }
 
 const int runs = 3;
-const std::vector<int> sizes{ 10, 1000, 1500, 2000 };
+const std::vector<int> sizes{ 32, 320, 640, 1280 };
 
 int main(int argc, char* argv[]) {
-	cout << "omp" << endl;
-	for (const auto size : sizes) {
-		wcout << matrix_multiply_perf(openmpTitle, size, runs) << endl;
-	}
 	pick_accelerator(0);
 	for (const auto size : sizes) {
-		wcout << matrix_multiply_perf(ampTitle, size, runs) << endl;
+		wcout << matrix_multiply_perf("enlarged", size, runs) << endl;
 	}
-	pick_accelerator(1);
-	for (const auto size : sizes) {
-		wcout << matrix_multiply_perf(ampTitle, size, runs) << endl;
-	}
-	cout << "seq" << endl;
-	for (const auto size : sizes) {
-		wcout << matrix_multiply_perf(seqentalTitle, size, runs) << endl;
-	}
-
 	return 0;
 }

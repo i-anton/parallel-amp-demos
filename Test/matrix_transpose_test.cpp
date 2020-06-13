@@ -12,8 +12,8 @@ struct TestDataSet {
 		C(new MatrixValue[size_x * size_y]) {
 		const auto size = size_x * size_y;
 		for (int i = 0; i < size; i++) {
-			A[i] = i;
-			C[i] = 0;
+			A[i] = static_cast<MatrixValue>(i);
+			C[i] = static_cast<MatrixValue>(0);
 		}
 	}
 };
@@ -52,11 +52,12 @@ TEST_P(MatrixTransposeTest, IsTransposed) {
 	}
 }
 
-const auto high = 25;
-const auto low = 10;
+const auto high = 64;
+const auto low = 32;
 auto* seq_ptr = sequental;
 auto* amp_ptr = amp_impl;
 auto* omp_ptr = openmp;
+auto* blocked = block;
 
 INSTANTIATE_TEST_CASE_P(Default, MatrixTransposeTest, testing::Values(
 	MatrixTransposeTestData{ 1, 1, seq_ptr },
@@ -72,5 +73,10 @@ INSTANTIATE_TEST_CASE_P(Default, MatrixTransposeTest, testing::Values(
 	MatrixTransposeTestData{ 1, 1, omp_ptr },
 	MatrixTransposeTestData{ high, low, omp_ptr },
 	MatrixTransposeTestData{ low, high, omp_ptr },
-	MatrixTransposeTestData{ high, high, omp_ptr })
+	MatrixTransposeTestData{ high, high, omp_ptr },
+
+	MatrixTransposeTestData{ 1, 1, blocked },
+	MatrixTransposeTestData{ high, low, blocked },
+	MatrixTransposeTestData{ low, high, blocked },
+	MatrixTransposeTestData{ high, high, blocked })
 );

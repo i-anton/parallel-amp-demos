@@ -118,6 +118,10 @@ auto* seq_ptr = sequental;
 auto* amp_ptr = amp_impl;
 auto* omp_ptr = openmp;
 
+auto* block_no_shared_ptr = block_no_shared;
+auto* block_shared_ptr = block_shared;
+auto* enlarged_ptr = enlarged;
+
 INSTANTIATE_TEST_CASE_P(Default, MatrixMulTest,
 	testing::Values(
 		MatrixMultiplyTestData(columnOnRow[0], columnOnRow[1], columnOnRow[2], seq_ptr),
@@ -130,6 +134,18 @@ INSTANTIATE_TEST_CASE_P(Default, MatrixMulTest,
 
 		MatrixMultiplyTestData(columnOnRow[0], columnOnRow[1], columnOnRow[2], omp_ptr),
 		MatrixMultiplyTestData(rowOnColumn[0], rowOnColumn[1], rowOnColumn[2], omp_ptr),
-		MatrixMultiplyTestData(squared[0], squared[1], squared[2], omp_ptr)
+		MatrixMultiplyTestData(squared[0], squared[1], squared[2], omp_ptr),
+
+		MatrixMultiplyTestData(columnOnRow[0], columnOnRow[1], columnOnRow[2], block_no_shared_ptr),
+		MatrixMultiplyTestData(rowOnColumn[0], rowOnColumn[1], rowOnColumn[2], block_no_shared_ptr),
+		MatrixMultiplyTestData(squared[0], squared[1], squared[2], block_no_shared_ptr),
+
+		MatrixMultiplyTestData(columnOnRow[0], columnOnRow[1], columnOnRow[2], block_shared_ptr),
+		MatrixMultiplyTestData(rowOnColumn[0], rowOnColumn[1], rowOnColumn[2], block_shared_ptr),
+		MatrixMultiplyTestData(squared[0], squared[1], squared[2], block_shared_ptr),
+
+		MatrixMultiplyTestData(columnOnRow[0], columnOnRow[1], columnOnRow[2], enlarged_ptr),
+		MatrixMultiplyTestData(rowOnColumn[0], rowOnColumn[1], rowOnColumn[2], enlarged_ptr),
+		MatrixMultiplyTestData(squared[0], squared[1], squared[2], enlarged_ptr)
 	)
 );

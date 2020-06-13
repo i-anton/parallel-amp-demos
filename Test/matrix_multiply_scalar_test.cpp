@@ -13,8 +13,8 @@ struct TestDataSet {
 		C(new MatrixValue[size_x * size_y]) {
 		const auto size = size_x * size_y;
 		for (int i = 0; i < size; i++) {
-			A[i] = i;
-			C[i] = 0;
+			A[i] = static_cast<MatrixValue>(i);
+			C[i] = static_cast<MatrixValue>(0);
 		}
 	}
 };

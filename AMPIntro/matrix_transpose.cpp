@@ -41,6 +41,7 @@ FunctionSignature matrix_transpose::from_string(const std::string& name) {
 	if (name == seqentalTitle) return &sequental;
 	if (name == ampTitle) return &amp_impl;
 	else if (name == openmpTitle) return &openmp;
+	else if (name == "block") return &block;
 	else return nullptr;
 }
 
@@ -49,4 +50,23 @@ std::string matrix_transpose::to_string(FunctionSignature name) {
 	else if (name == &amp_impl) return ampTitle;
 	else if (name == &openmp) return openmpTitle;
 	else return unknownTitle;
+}
+
+void matrix_transpose::block(const Matrix& A, Matrix& C)
+{
+	using namespace Concurrency;
+	static const int tileSize = 32;
+	array_view<const MatrixValue, 2> a(A.size_x, A.size_y, A.values);
+	array_view<MatrixValue, 2> result(A.size_y, A.size_x, C.values);
+	result.discard_data();
+	parallel_for_each(a.extent.tile<tileSize, tileSize>(),
+		[=](tiled_index<tileSize, tileSize> tidx) restrict(amp)
+		{
+			tile_static MatrixValue localData[tileSize][tileSize];
+			localData[tidx.local[1]][tidx.local[0]] = a[tidx.global];
+			tidx.barrier.wait();
+			index<2> outIdx(index<2>(tidx.tile_origin[1], tidx.tile_origin[0]) + tidx.local);
+			result[outIdx] = localData[tidx.local[0]][tidx.local[1]];
+		});
+	result.synchronize();
 }

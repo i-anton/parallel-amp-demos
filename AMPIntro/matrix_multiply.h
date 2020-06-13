@@ -10,4 +10,8 @@ namespace matrix_multiply {
 
 	FunctionSignature from_string(const std::string& name);
 	std::string to_string(FunctionSignature name);
+	
+	void block_no_shared(const Matrix& A, const Matrix& B, Matrix& C);
+	void block_shared(const Matrix& A, const Matrix& B, Matrix& C);
+	void enlarged(const Matrix& A, const Matrix& B, Matrix& C);
 }

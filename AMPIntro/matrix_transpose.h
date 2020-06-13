@@ -10,4 +10,6 @@ namespace matrix_transpose {
 
 	FunctionSignature from_string(const std::string& name);
 	std::string to_string(FunctionSignature name);
+
+	void block(const Matrix& A, Matrix& C);
 }

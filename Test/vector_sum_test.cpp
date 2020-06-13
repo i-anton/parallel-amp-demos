@@ -22,9 +22,9 @@ struct TestDataSet {
 TestDataSet make_dataset_increased(int size) {
 	TestDataSet t(size);
 	for (int i = 0; i < size; i++) {
-		t.A[i] = i;
-		t.B[i] = i * 2.0;
-		t.C[i] = 0;
+		t.A[i] = static_cast<MatrixValue>(i);
+		t.B[i] = static_cast<MatrixValue>(i * 2);
+		t.C[i] = static_cast<MatrixValue>(0);
 	}
 	return t;
 }
@@ -32,9 +32,9 @@ TestDataSet make_dataset_increased(int size) {
 TestDataSet make_dataset_zeroed(int size) {
 	TestDataSet t(size);
 	for (int i = 0; i < size; i++) {
-		t.A[i] = -i;
-		t.B[i] = i;
-		t.C[i] = 0;
+		t.A[i] = static_cast<MatrixValue>(-i);
+		t.B[i] = static_cast<MatrixValue>(i);
+		t.C[i] = static_cast<MatrixValue>(0);
 	}
 	return t;
 }
