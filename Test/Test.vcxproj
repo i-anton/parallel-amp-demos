@@ -37,6 +37,7 @@
     <ClCompile Include="matrix_multiply_scalar_test.cpp" />
     <ClCompile Include="matrix_multiply_test.cpp" />
     <ClCompile Include="matrix_transpose_test.cpp" />
+    <ClCompile Include="sum_reduction_test.cpp" />
     <ClCompile Include="vector_sum_test.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -89,7 +90,7 @@
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
-      <AdditionalDependencies>$(SolutionDir)AMPIntro\$(IntermediateOutputPath)vector_sum.obj;$(SolutionDir)AMPIntro\$(IntermediateOutputPath)matrix_multiply_scalar.obj;$(SolutionDir)AMPIntro\$(IntermediateOutputPath)matrix_transpose.obj;$(SolutionDir)AMPIntro\$(IntermediateOutputPath)matrix_multiply.obj;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>$(SolutionDir)AMPIntro\$(IntermediateOutputPath)vector_sum.obj;$(SolutionDir)AMPIntro\$(IntermediateOutputPath)matrix_multiply_scalar.obj;$(SolutionDir)AMPIntro\$(IntermediateOutputPath)matrix_transpose.obj;$(SolutionDir)AMPIntro\$(IntermediateOutputPath)matrix_multiply.obj;$(SolutionDir)AMPIntro\$(IntermediateOutputPath)sum_reduction.obj;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -128,7 +129,7 @@
       <SubSystem>Console</SubSystem>
       <OptimizeReferences>true</OptimizeReferences>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
-      <AdditionalDependencies>$(SolutionDir)AMPIntro\$(IntermediateOutputPath)vector_sum.obj;$(SolutionDir)AMPIntro\$(IntermediateOutputPath)matrix_multiply_scalar.obj;$(SolutionDir)AMPIntro\$(IntermediateOutputPath)matrix_transpose.obj;$(SolutionDir)AMPIntro\$(IntermediateOutputPath)matrix_multiply.obj;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>$(SolutionDir)AMPIntro\$(IntermediateOutputPath)vector_sum.obj;$(SolutionDir)AMPIntro\$(IntermediateOutputPath)matrix_multiply_scalar.obj;$(SolutionDir)AMPIntro\$(IntermediateOutputPath)matrix_transpose.obj;$(SolutionDir)AMPIntro\$(IntermediateOutputPath)matrix_multiply.obj;$(SolutionDir)AMPIntro\$(IntermediateOutputPath)sum_reduction.obj;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

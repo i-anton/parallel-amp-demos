@@ -4,6 +4,7 @@
 #include "matrix_multiply_scalar.h"
 #include "matrix_transpose.h"
 #include "matrix_multiply.h"
+#include "sum_reduction.h"
 
 using namespace std;
 using namespace concurrency;
@@ -120,6 +121,25 @@ double matrix_multiply_perf(const string& algorithm_type, int size, int runs) {
 	return acc_time / static_cast<double>(runs);
 }
 
+double reduction_sum_perf(sum_reduction::FunctionSignature func, int size, int runs) {
+	using namespace sum_reduction;
+	if (size <= 0) exit(1);
+	size_t size_scaled = static_cast<size_t>(size);
+	unique_ptr<vector<MatrixValue>> data(new vector<MatrixValue>(size_scaled));
+	for (int i = 0; i < size; i++)
+		data->push_back(static_cast<MatrixValue>(i));
+
+	double acc_time = 0.0;
+	for (size_t i = 0; i < runs; i++) {
+		Timer t;
+		t.Start();
+		func(*data);
+		t.Stop();
+		acc_time += t.Elapsed();
+	}
+	return acc_time / static_cast<double>(runs);
+}
+
 bool pick_accelerator(size_t index) {
 	const auto accs = accelerator::get_all();
 	accelerator chosen_one = accs[index];
@@ -129,12 +149,45 @@ bool pick_accelerator(size_t index) {
 }
 
 const int runs = 3;
-const std::vector<int> sizes{ 32, 320, 640, 1280 };
+const std::vector<int> sizes{ 40960, 81920, 163840 };
 
 int main(int argc, char* argv[]) {
 	pick_accelerator(0);
+	using namespace sum_reduction;
+	wcout << "simple" << endl;
+	reduction_sum_perf(simple, 64, 1);
 	for (const auto size : sizes) {
-		wcout << matrix_multiply_perf("enlarged", size, runs) << endl;
+		wcout << reduction_sum_perf(simple, size, runs) << endl;
+	}
+	wcout << "simple_windowed" << endl;
+	for (const auto size : sizes) {
+		wcout << reduction_sum_perf(simple_windowed<8>, size, runs) << endl;
+	}
+	for (const auto size : sizes) {
+		wcout << reduction_sum_perf(simple_windowed<16>, size, runs) << endl;
+	}
+	for (const auto size : sizes) {
+		wcout << reduction_sum_perf(simple_windowed<32>, size, runs) << endl;
+	}
+	wcout << "block_strided" << endl;
+	for (const auto size : sizes) {
+		wcout << reduction_sum_perf(block_strided<8>, size, runs) << endl;
+	}
+	for (const auto size : sizes) {
+		wcout << reduction_sum_perf(block_strided<16>, size, runs) << endl;
+	}
+	for (const auto size : sizes) {
+		wcout << reduction_sum_perf(block_strided<32>, size, runs) << endl;
+	}
+	wcout << "block_cascaded" << endl;
+	for (const auto size : sizes) {
+		wcout << reduction_sum_perf(block_cascaded<8>, size, runs) << endl;
+	}
+	for (const auto size : sizes) {
+		wcout << reduction_sum_perf(block_cascaded<16>, size, runs) << endl;
+	}
+	for (const auto size : sizes) {
+		wcout << reduction_sum_perf(block_cascaded<32>, size, runs) << endl;
 	}
 	return 0;
 }

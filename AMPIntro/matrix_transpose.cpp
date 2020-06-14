@@ -56,6 +56,10 @@ void matrix_transpose::block(const Matrix& A, Matrix& C)
 {
 	using namespace Concurrency;
 	static const int tileSize = 32;
+	if (A.size_x == A.size_y && A.size_y == 1) {
+		C.values[0] = A.values[0];
+		return;
+	}
 	array_view<const MatrixValue, 2> a(A.size_x, A.size_y, A.values);
 	array_view<MatrixValue, 2> result(A.size_y, A.size_x, C.values);
 	result.discard_data();
