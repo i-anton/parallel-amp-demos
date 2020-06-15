@@ -35,5 +35,8 @@
     <ClInclude Include="ui.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
+    <ClInclude Include="timer.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

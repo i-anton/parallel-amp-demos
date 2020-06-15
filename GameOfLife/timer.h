@@ -4,7 +4,6 @@
 struct Timer {
     void Start() { QueryPerformanceCounter(&m_start); }
     void Stop() { QueryPerformanceCounter(&m_stop); }
-    // Returns elapsed time in milliseconds (ms)
     double Elapsed() const {
         return (m_stop.QuadPart - m_start.QuadPart - m_overhead) * 1000.0 / m_freq.QuadPart;
     }
@@ -20,3 +19,8 @@ private:
     static LARGE_INTEGER m_freq;
     static LONGLONG m_overhead;
 };
+
+LARGE_INTEGER Timer::m_freq = \
+(QueryPerformanceFrequency(&Timer::m_freq), Timer::m_freq);
+
+LONGLONG Timer::m_overhead = Timer::GetOverhead();

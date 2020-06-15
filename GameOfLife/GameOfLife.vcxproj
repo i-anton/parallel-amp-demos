@@ -162,6 +162,7 @@
   <ItemGroup>
     <ClInclude Include="logic.h" />
     <ClInclude Include="stdafx.h" />
+    <ClInclude Include="timer.h" />
     <ClInclude Include="ui.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

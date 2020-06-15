@@ -32,7 +32,7 @@ void UI::handle_input(const sf::Event::MouseButtonEvent& evt) {
 }
 
 void UI::update() {
-	logic::sequental(*shadow_state, shadow_row_size, *shadow_state_double);
+	logic::parallel_branchless_shared<8>(*shadow_state, shadow_row_size, *shadow_state_double);
 	// TODO: remove copy 
 	copy_state_from_shadow();
 }
@@ -67,7 +67,7 @@ UI::UI() :
 		"Game of life demo",
 		sf::Style::Titlebar | sf::Style::Close),
 	brush(sf::Vector2f(PIXEL_SIZE, PIXEL_SIZE)),
-	state(new std::vector<PixelData>(FIELD_SIZE* FIELD_SIZE)),
+	state(new std::vector<PixelData>(FIELD_SIZE * FIELD_SIZE)),
 	shadow_state(new std::vector<PixelData>(shadow_row_size* shadow_row_size)),
 	shadow_state_double(new std::vector<PixelData>(shadow_row_size* shadow_row_size))
 {
