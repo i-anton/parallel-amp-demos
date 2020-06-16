@@ -27,7 +27,7 @@ void UI::update() {
 	const auto input_p = &((*input)[0]);
 	const auto output_p = &((*output)[0]);
 	const auto size = (*output).size();
-	logic::textured(*input, *output, *heat, FIELD_SIZE, 5);
+	logic::textured(*input, *output, *heat, FIELD_SIZE, 5, 1);
 	for (size_t i = 0; i < size; i++)
 		input_p[i] = output_p[i];
 }

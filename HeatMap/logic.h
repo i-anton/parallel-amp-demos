@@ -2,10 +2,10 @@
 #include "stdafx.h"
 
 using PixelData = int;
-
+using PixelVector = std::vector<PixelData>;
 namespace logic {
-	using FunctionSignature = void (*)(std::vector<PixelData>& input_v, std::vector<PixelData>& output_v, std::vector<PixelData>& source_v, int field_size, int k);
-	void sequental(std::vector<PixelData>& input_v, std::vector<PixelData>& output_v, std::vector<PixelData>& source_v, int field_size, int k);
-	void global(std::vector<PixelData>& input, std::vector<PixelData>& output, std::vector<PixelData>& sources, int field_size, int k);
-	void textured(std::vector<PixelData>& input, std::vector<PixelData>& output, std::vector<PixelData>& sources, int field_size, int k);
+	using FunctionSignature = void (*)(PixelVector& input_v, PixelVector& output_v, PixelVector& source_v, int field_size, int k, int iter);
+	void sequental(PixelVector& input_v, PixelVector& output_v, PixelVector& source_v, int field_size, int k, int iter);
+	void global(PixelVector& input, PixelVector& output, PixelVector& sources, int field_size, int k, int iter);
+	void textured(PixelVector& input, PixelVector& output, PixelVector& sources, int field_size, int k, int iter);
 };

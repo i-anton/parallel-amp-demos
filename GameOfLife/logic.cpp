@@ -1,7 +1,7 @@
 #include "logic.h"
 
 // field_size is shadow_row_size
-void logic::sequental(std::vector<PixelData>& shadow_state, int field_size, std::vector<PixelData>& shadow_state_double)
+void logic::sequental(PixelVector& shadow_state, int field_size, PixelVector& shadow_state_double, int iter)
 {
 	const auto data = &(shadow_state[0]);
 	const auto new_data = &(shadow_state_double[0]);
@@ -54,7 +54,7 @@ void logic::sequental(std::vector<PixelData>& shadow_state, int field_size, std:
 	}
 }
 
-void logic::parallel(std::vector<PixelData>& shadow_state, int field_size, std::vector<PixelData>& shadow_state_double)
+void logic::parallel(PixelVector& shadow_state, int field_size, PixelVector& shadow_state_double, int iter)
 {
 	using namespace concurrency;
 	const auto data = &(shadow_state[0]);
@@ -104,7 +104,7 @@ void logic::parallel(std::vector<PixelData>& shadow_state, int field_size, std::
 	data_out.synchronize();
 }
 
-void logic::parallel_branchless(std::vector<PixelData>& shadow_state, int field_size, std::vector<PixelData>& shadow_state_double)
+void logic::parallel_branchless(PixelVector& shadow_state, int field_size, PixelVector& shadow_state_double, int iter)
 {
 	using namespace concurrency;
 	const auto data = &(shadow_state[0]);
@@ -154,7 +154,7 @@ void logic::parallel_branchless(std::vector<PixelData>& shadow_state, int field_
 	data_out.synchronize();
 }
 
-void logic::parallel_branchless_const(std::vector<PixelData>& shadow_state, int field_size, std::vector<PixelData>& shadow_state_double)
+void logic::parallel_branchless_const(PixelVector& shadow_state, int field_size, PixelVector& shadow_state_double, int iter)
 {
 	using namespace concurrency;
 	const auto data = &(shadow_state[0]);

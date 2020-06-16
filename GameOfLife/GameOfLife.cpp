@@ -17,7 +17,7 @@ double life_check(const FunctionSignature func, int size, int runs) {
 	for (size_t i = 0; i < runs; i++) {
 		Timer t;
 		t.Start();
-		func(*A, static_cast<int>(shadow_size), *B);
+		func(*A, static_cast<int>(shadow_size), *B, 5);
 		t.Stop();
 		acc_time += t.Elapsed();
 	}

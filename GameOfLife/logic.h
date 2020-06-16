@@ -2,6 +2,8 @@
 #include "stdafx.h"
 
 using PixelData = int;
+using PixelVector = std::vector<PixelData>;
+
 struct SharedRules {
 	const int rules[18] = {
 		 0, 0, 0, 1, 0, 0, 0, 0, 0, // dead
@@ -10,13 +12,13 @@ struct SharedRules {
 };
 
 namespace logic {
-	using FunctionSignature = void (*)(std::vector<PixelData>& shadow_state, int field_size, std::vector<PixelData>& shadow_state_double);
-	void sequental(std::vector<PixelData>& shadow_state, int field_size, std::vector<PixelData>& shadow_state_double);
-	void parallel(std::vector<PixelData>& shadow_state, int field_size, std::vector<PixelData>& shadow_state_double);
-	void parallel_branchless(std::vector<PixelData>& shadow_state, int field_size, std::vector<PixelData>& shadow_state_double);
-	void parallel_branchless_const(std::vector<PixelData>& shadow_state, int field_size, std::vector<PixelData>& shadow_state_double);
+	using FunctionSignature = void (*)(PixelVector& shadow_state, int field_size, PixelVector& shadow_state_double, int iter);
+	void sequental(PixelVector& shadow_state, int field_size, PixelVector& shadow_state_double, int iter);
+	void parallel(PixelVector& shadow_state, int field_size, PixelVector& shadow_state_double, int iter);
+	void parallel_branchless(PixelVector& shadow_state, int field_size, PixelVector& shadow_state_double, int iter);
+	void parallel_branchless_const(PixelVector& shadow_state, int field_size, PixelVector& shadow_state_double, int iter);
 	template <int tile_size>
-	void parallel_branchless_shared(std::vector<PixelData>& shadow_state, int field_size, std::vector<PixelData>& shadow_state_double)
+	void parallel_branchless_shared(PixelVector& shadow_state, int field_size, PixelVector& shadow_state_double, int iter)
 	{
 		using namespace concurrency;
 		const auto data = &(shadow_state[0]);

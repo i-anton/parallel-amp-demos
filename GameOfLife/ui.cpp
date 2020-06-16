@@ -32,7 +32,7 @@ void UI::handle_input(const sf::Event::MouseButtonEvent& evt) {
 }
 
 void UI::update() {
-	logic::parallel_branchless_shared<8>(*shadow_state, shadow_row_size, *shadow_state_double);
+	logic::parallel_branchless_shared<8>(*shadow_state, shadow_row_size, *shadow_state_double, 1);
 	// TODO: remove copy 
 	copy_state_from_shadow();
 }

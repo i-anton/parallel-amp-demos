@@ -1,6 +1,6 @@
 #include "logic.h"
 
-void logic::sequental(std::vector<PixelData>& input_v, std::vector<PixelData>& output_v, std::vector<PixelData>& source_v, int field_size, int k) {
+void logic::sequental(PixelVector& input_v, PixelVector& output_v, PixelVector& source_v, int field_size, int k, int iter) {
 	const auto input = &(input_v[0]);
 	const auto output = &(output_v[0]);
 	const auto source = &(source_v[0]);
@@ -37,7 +37,7 @@ void logic::sequental(std::vector<PixelData>& input_v, std::vector<PixelData>& o
 	}
 }
 
-void logic::global(std::vector<PixelData>& input_v, std::vector<PixelData>& output_v, std::vector<PixelData>& source_v, int field_size, int k) {
+void logic::global(PixelVector& input_v, PixelVector& output_v, PixelVector& source_v, int field_size, int k, int iter) {
 	using namespace concurrency;
 	const auto input = &(input_v[0]);
 	const auto output = &(output_v[0]);
@@ -69,12 +69,11 @@ void logic::global(std::vector<PixelData>& input_v, std::vector<PixelData>& outp
 	out.synchronize();
 }
 
-void logic::textured(std::vector<PixelData>& input_v, std::vector<PixelData>& output_v, std::vector<PixelData>& source_v, int field_size, int k) {
+void logic::textured(PixelVector& input_v, PixelVector& output_v, PixelVector& source_v, int field_size, int k, int iter) {
 	using namespace concurrency;
 	const auto output = &(output_v[0]);
 	const auto n = field_size - 1;
 	graphics::texture<PixelData, 2> tex(field_size, field_size, input_v.cbegin(), input_v.cend());
-
 	array_view<PixelData, 2> out(field_size, field_size, output);
 	out.discard_data();
 	parallel_for_each(out.extent, [=, &tex](index<2>idx)restrict(amp)
