@@ -118,8 +118,8 @@ auto* seq_ptr = sequental;
 auto* amp_ptr = amp_impl;
 auto* omp_ptr = openmp;
 
-auto* block_no_shared_ptr = block_no_shared;
-auto* block_shared_ptr = block_shared;
+auto* block_no_shared_ptr = block_no_shared<32>;
+auto* block_shared_ptr = block_shared<32>;
 auto* enlarged_ptr = enlarged;
 
 INSTANTIATE_TEST_CASE_P(Default, MatrixMulTest,

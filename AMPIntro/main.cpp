@@ -154,40 +154,22 @@ const std::vector<int> sizes{ 40960, 81920, 163840 };
 int main(int argc, char* argv[]) {
 	pick_accelerator(0);
 	using namespace sum_reduction;
-	wcout << "simple" << endl;
-	reduction_sum_perf(simple, 64, 1);
-	for (const auto size : sizes) {
-		wcout << reduction_sum_perf(simple, size, runs) << endl;
-	}
-	wcout << "simple_windowed" << endl;
-	for (const auto size : sizes) {
-		wcout << reduction_sum_perf(simple_windowed<8>, size, runs) << endl;
-	}
-	for (const auto size : sizes) {
-		wcout << reduction_sum_perf(simple_windowed<16>, size, runs) << endl;
-	}
-	for (const auto size : sizes) {
-		wcout << reduction_sum_perf(simple_windowed<32>, size, runs) << endl;
-	}
-	wcout << "block_strided" << endl;
-	for (const auto size : sizes) {
-		wcout << reduction_sum_perf(block_strided<8>, size, runs) << endl;
-	}
-	for (const auto size : sizes) {
-		wcout << reduction_sum_perf(block_strided<16>, size, runs) << endl;
-	}
-	for (const auto size : sizes) {
-		wcout << reduction_sum_perf(block_strided<32>, size, runs) << endl;
-	}
-	wcout << "block_cascaded" << endl;
-	for (const auto size : sizes) {
-		wcout << reduction_sum_perf(block_cascaded<8>, size, runs) << endl;
-	}
-	for (const auto size : sizes) {
-		wcout << reduction_sum_perf(block_cascaded<16>, size, runs) << endl;
-	}
-	for (const auto size : sizes) {
-		wcout << reduction_sum_perf(block_cascaded<32>, size, runs) << endl;
+	const vector<tuple<string, FunctionSignature>> to_check = {
+		{"simple", simple},
+		{"simple_windowed8", simple_windowed<8>},
+		{"simple_windowed16", simple_windowed<16>},
+		{"simple_windowed32", simple_windowed<32>},
+		{"block_strided8", block_strided<8>},
+		{"block_strided16", block_strided<16>},
+		{"block_strided32", block_strided<32>},
+		{"block_cascaded8", block_cascaded<8>},
+		{"block_cascaded16", block_cascaded<16>},
+		{"block_cascaded32", block_cascaded<32>},
+	};
+	for (const auto& check : to_check)
+	{
+		cout << std::get<0>(check) << endl;
+		for (const auto size : sizes) wcout << reduction_sum_perf(std::get<1>(check), size, runs) << endl;
 	}
 	return 0;
 }

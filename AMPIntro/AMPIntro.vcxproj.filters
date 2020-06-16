@@ -30,9 +30,6 @@
     <ClCompile Include="matrix_multiply.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="timer.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
     <ClCompile Include="sum_reduction.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>

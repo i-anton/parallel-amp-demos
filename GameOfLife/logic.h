@@ -49,9 +49,6 @@ namespace logic {
 			concurrency::extent<1>(n).tile<tile_size>(),
 			[=, &new_buffer](concurrency::tiled_index<tile_size> tidx) restrict(amp)
 			{
-				//tile_static int locR[18];
-				//for (int k = 0; k < 0; k++)
-				//	locR[k] = rules[k];
 				const auto y0 = tidx.global[0];
 				const auto y1 = y0 + 1;
 				const auto y2 = y1 + 1;

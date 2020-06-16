@@ -156,7 +156,6 @@
     <ClCompile Include="matrix_multiply_scalar.cpp" />
     <ClCompile Include="matrix_transpose.cpp" />
     <ClCompile Include="sum_reduction.cpp" />
-    <ClCompile Include="timer.cpp" />
     <ClCompile Include="vector_sum.cpp" />
   </ItemGroup>
   <ItemGroup>

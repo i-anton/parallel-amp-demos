@@ -57,7 +57,7 @@ const auto low = 32;
 auto* seq_ptr = sequental;
 auto* amp_ptr = amp_impl;
 auto* omp_ptr = openmp;
-auto* blocked = block;
+auto* blocked = block<16>;
 
 INSTANTIATE_TEST_CASE_P(Default, MatrixTransposeTest, testing::Values(
 	MatrixTransposeTestData{ 1, 1, seq_ptr },

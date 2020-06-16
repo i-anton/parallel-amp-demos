@@ -20,3 +20,8 @@ private:
     static LARGE_INTEGER m_freq;
     static LONGLONG m_overhead;
 };
+
+LARGE_INTEGER Timer::m_freq = \
+(QueryPerformanceFrequency(&Timer::m_freq), Timer::m_freq);
+
+LONGLONG Timer::m_overhead = Timer::GetOverhead();
