@@ -1,26 +1,25 @@
 #pragma once
-#include <windows.h>
+#include <chrono>
 
 struct Timer {
-    void Start() { QueryPerformanceCounter(&m_start); }
-    void Stop() { QueryPerformanceCounter(&m_stop); }
+    typedef std::chrono::high_resolution_clock clock;
+    typedef std::chrono::time_point<clock> time_point;
+    typedef std::chrono::duration<double, std::milli> ms_duration;
+    void Start() { m_start = clock::now(); }
+    void Stop() { m_stop = clock::now(); }
     double Elapsed() const {
-        return (m_stop.QuadPart - m_start.QuadPart - m_overhead) * 1000.0 / m_freq.QuadPart;
+        return (ms_duration(m_stop - m_start) - m_overhead).count();
     }
 private:
-    static LONGLONG GetOverhead() {
+    static ms_duration GetOverhead() {
         Timer t;
         t.Start();
         t.Stop();
-        return t.m_stop.QuadPart - t.m_start.QuadPart;
+        return (t.m_stop - t.m_start);
     }
-    LARGE_INTEGER m_start;
-    LARGE_INTEGER m_stop;
-    static LARGE_INTEGER m_freq;
-    static LONGLONG m_overhead;
+    time_point m_start;
+    time_point m_stop;
+    static ms_duration m_overhead;
 };
 
-LARGE_INTEGER Timer::m_freq = \
-(QueryPerformanceFrequency(&Timer::m_freq), Timer::m_freq);
-
-LONGLONG Timer::m_overhead = Timer::GetOverhead();
+Timer::ms_duration Timer::m_overhead = Timer::GetOverhead();

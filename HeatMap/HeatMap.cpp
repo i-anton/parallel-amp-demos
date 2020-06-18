@@ -11,8 +11,8 @@ double life_check(const FunctionSignature func, int size, int runs) {
 	unique_ptr<vector<PixelData>> in(new vector<PixelData>(data_size));
 	unique_ptr<vector<PixelData>> out(new vector<PixelData>(data_size));
 	unique_ptr<vector<PixelData>> heat(new vector<PixelData>(data_size));
-	const auto a_ptr = &(*in)[0];
-	const auto h_ptr = &(*in)[0];
+	const auto a_ptr = &((*in)[0]);
+	const auto h_ptr = &((*in)[0]);
 	for (size_t i = 0; i < data_size; i++)
 		a_ptr[i] = rand() & 1;
 

@@ -4,7 +4,6 @@ void logic::sequental(PixelVector& input_v, PixelVector& output_v, PixelVector& 
 	const auto input = &(input_v[0]);
 	const auto output = &(output_v[0]);
 	const auto source = &(source_v[0]);
-	const auto size = input_v.size();
 	const auto n = field_size - 1;
 	for (int y = 0; y < field_size; y++)
 	{
@@ -42,10 +41,10 @@ void logic::global(PixelVector& input_v, PixelVector& output_v, PixelVector& sou
 	const auto input = &(input_v[0]);
 	const auto output = &(output_v[0]);
 	const auto source = &(source_v[0]);
-	const auto size = input_v.size();
 	const auto n = field_size - 1;
 	array_view<const PixelData, 2> in(field_size, field_size, input);
 	array_view<PixelData, 2> out(field_size, field_size, output);
+	array_view<const PixelData, 2> heat(field_size, field_size, source);
 	out.discard_data();
 	parallel_for_each(out.extent, [=](index<2>idx)restrict(amp)
 		{
@@ -59,7 +58,6 @@ void logic::global(PixelVector& input_v, PixelVector& output_v, PixelVector& sou
 			out[idx] = in[idx] + (neighbours_sum - 4 * in[idx]) * k;
 		}
 	);
-	array_view<const PixelData, 2> heat(field_size, field_size, source);
 	parallel_for_each(out.extent, [=](index<2>idx)restrict(amp)
 		{
 			if (heat[idx] != 0)
@@ -74,6 +72,7 @@ void logic::textured(PixelVector& input_v, PixelVector& output_v, PixelVector& s
 	const auto output = &(output_v[0]);
 	const auto n = field_size - 1;
 	graphics::texture<PixelData, 2> tex(field_size, field_size, input_v.cbegin(), input_v.cend());
+	graphics::texture<PixelData, 2> heat(field_size, field_size, source_v.cbegin(), source_v.cend());
 	array_view<PixelData, 2> out(field_size, field_size, output);
 	out.discard_data();
 	parallel_for_each(out.extent, [=, &tex](index<2>idx)restrict(amp)
@@ -88,7 +87,6 @@ void logic::textured(PixelVector& input_v, PixelVector& output_v, PixelVector& s
 			out[idx] = tex[idx] + (neighbours_sum - 4 * tex[idx]) * k;
 		}
 	);
-	graphics::texture<PixelData, 2> heat(field_size, field_size, source_v.cbegin(), source_v.cend());
 	parallel_for_each(out.extent, [=, &heat](index<2>idx) restrict(amp)
 		{
 			if (heat[idx] != 0)

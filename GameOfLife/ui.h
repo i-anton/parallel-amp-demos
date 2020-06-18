@@ -12,13 +12,11 @@ private:
 	bool paused;
 	sf::RenderWindow window;
 	sf::RectangleShape brush;
-	std::unique_ptr<std::vector<PixelData>> state;
 	std::unique_ptr<std::vector<PixelData>> shadow_state;
 	std::unique_ptr<std::vector<PixelData>> shadow_state_double;
 private:
-	void copy_state_from_shadow();
 	void handle_input(const sf::Event::KeyEvent& evt);
-	void handle_input(const sf::Event::MouseButtonEvent& evt);
+	void handle_mouse();
 	void update();
 	void render();
 public:

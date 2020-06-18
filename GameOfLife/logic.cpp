@@ -104,8 +104,7 @@ void logic::parallel(PixelVector& shadow_state, int field_size, PixelVector& sha
 	data_out.synchronize();
 }
 
-void logic::parallel_branchless(PixelVector& shadow_state, int field_size, PixelVector& shadow_state_double, int iter)
-{
+void logic::parallel_branchless(PixelVector& shadow_state, int field_size, PixelVector& shadow_state_double, int iter) {
 	using namespace concurrency;
 	const auto data = &(shadow_state[0]);
 	array_view<PixelData, 2> data_out(field_size, field_size, data);

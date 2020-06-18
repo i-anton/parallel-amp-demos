@@ -10,13 +10,15 @@ void matrix_multiply::sequental(const Matrix& A, const Matrix& B, Matrix& C) {
 	const auto inner_size = A.size_y;
 	const auto b_x = B.size_x;
 	const auto size_y = B.size_y;
-	for (int row = 0; row < a_x; row++) {
-		for (int col = 0; col < size_y; col++) {
+	for (int y = 0; y < size_y; y++) {
+		const auto b_y_offset = y * b_x;
+		const auto a_y_offset = y * a_x;
+		for (int x = 0; x < a_x; x++) {
 			MatrixValue acc = 0.0;
 			for (int inner = 0; inner < inner_size; inner++) {
-				acc += pA[row + inner * a_x] * pB[inner + col * b_x];
+				acc += pA[x + inner * a_x] * pB[inner + b_y_offset];
 			}
-			pC[row + col * a_x] = acc;
+			pC[x + a_y_offset] = acc;
 		}
 	}
 }
@@ -48,13 +50,15 @@ void matrix_multiply::openmp(const Matrix& A, const Matrix& B, Matrix& C) {
 	const auto b_x = B.size_x;
 	const auto size_y = B.size_y;
 #pragma omp parallel for
-	for (int row = 0; row < a_x; row++) {
-		for (int col = 0; col < size_y; col++) {
+	for (int y = 0; y < size_y; y++) {
+		const auto b_y_offset = y * b_x;
+		const auto a_y_offset = y * a_x;
+		for (int x = 0; x < a_x; x++) {
 			MatrixValue acc = 0.0;
 			for (int inner = 0; inner < inner_size; inner++) {
-				acc += pA[row + inner * a_x] * pB[inner + col * b_x];
+				acc += pA[x + inner * a_x] * pB[inner + b_y_offset];
 			}
-			pC[row + col * a_x] = acc;
+			pC[x + a_y_offset] = acc;
 		}
 	}
 }
@@ -85,18 +89,18 @@ void matrix_multiply::enlarged(const Matrix& A, const Matrix& B, Matrix& C)
 	array_view<const MatrixValue, 2> a(A.size_x, A.size_y, A.values);
 	array_view<const MatrixValue, 2> b(B.size_x, B.size_y, B.values);
 	array_view<MatrixValue, 2> product(C.size_x, C.size_y, C.values);
-	const auto a_x = A.size_x;
 	const auto inner_size = A.size_y;
 	const auto size_y = C.size_y;
-	extent<1> e(a_x);
-	parallel_for_each(e, [=](index<1>idx) restrict(amp)
+	const auto a_x = A.size_x;
+	parallel_for_each(extent<1>(size_y), [=](index<1>idx) restrict(amp)
 		{
-			for (int col = 0; col < size_y; col++)
+			const auto y = idx[0];
+			for (int x = 0; x < a_x; x++)
 			{
 				MatrixValue sum = 0;
 				for (int j = 0; j < inner_size; j++)
-					sum += a(idx[0], j) * b(j, col);
-				product(idx[0], col) = sum;
+					sum += a(x, j) * b(j, y);
+				product(x, y) = sum;
 			}
 		});
 	product.synchronize();

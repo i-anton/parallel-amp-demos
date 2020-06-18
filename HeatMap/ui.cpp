@@ -1,35 +1,34 @@
 #include "ui.h"
 
-constexpr auto end = FIELD_SIZE - 1;
-constexpr auto shadow_row_size = FIELD_SIZE + 2;
-
 void UI::handle_input(const sf::Event::KeyEvent& evt) {
-	const auto key = evt.code;
-	if (key == sf::Keyboard::Space)
+	if (evt.code == sf::Keyboard::Space)
 		paused = !paused;
+	else if (evt.code == sf::Keyboard::Escape)
+		window.close();
 }
 
-void UI::handle_input(const sf::Event::MouseButtonEvent& evt) {
+void UI::handle_mouse() {
+	const auto isLeftPressed = sf::Mouse::isButtonPressed(sf::Mouse::Button::Left);
+	const auto isRightPressed = sf::Mouse::isButtonPressed(sf::Mouse::Button::Right);
+	if (!(isLeftPressed || isRightPressed)) return;
+	const auto mousePosition = sf::Mouse::getPosition(window);
 	const auto coords = window.mapCoordsToPixel(sf::Vector2f(
-		static_cast<float>(evt.x), static_cast<float>(evt.y)
+		static_cast<float>(mousePosition.x),
+		static_cast<float>(mousePosition.y)
 	));
-	if (coords.x >= WINDOW_SIZE || coords.y >= WINDOW_SIZE)
+	if (coords.x >= WINDOW_SIZE || coords.x < 0 || coords.y >= WINDOW_SIZE || coords.y < 0)
 		return;
 	const auto local_coords = sf::Vector2i(coords.x / PIXEL_SIZE, coords.y / PIXEL_SIZE);
-	const auto field_idx = (local_coords.x) + (local_coords.y) * FIELD_SIZE;
-	if (evt.button == sf::Mouse::Button::Left)
+	const auto field_idx = local_coords.x + local_coords.y * FIELD_SIZE;
+	if (isLeftPressed)
 		(*heat)[field_idx] = 36;
-	else if (evt.button == sf::Mouse::Button::Right)
+	else if (isRightPressed)
 		(*heat)[field_idx] = 0;
 }
 
 void UI::update() {
-	const auto input_p = &((*input)[0]);
-	const auto output_p = &((*output)[0]);
-	const auto size = (*output).size();
 	logic::textured(*input, *output, *heat, FIELD_SIZE, 5, 1);
-	for (size_t i = 0; i < size; i++)
-		input_p[i] = output_p[i];
+	std::swap(input, output);
 }
 
 void UI::render() {
@@ -80,9 +79,8 @@ void UI::start() {
 				window.close();
 			else if (event.type == sf::Event::KeyPressed)
 				handle_input(event.key);
-			else if (event.type == sf::Event::MouseButtonReleased)
-				handle_input(event.mouseButton);
 		}
+		handle_mouse();
 		if (!paused)
 			update();
 		render();

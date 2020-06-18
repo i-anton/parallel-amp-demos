@@ -3,8 +3,8 @@
 using namespace matrix_multiply_scalar;
 
 void matrix_multiply_scalar::sequental(const Matrix& A, MatrixValue B, Matrix& C) {
-	auto pA = A.values;
-	auto pC = C.values;
+	const auto pA = A.values;
+	const auto pC = C.values;
 	const auto size = A.size_x * A.size_y;
 	for (size_t idx = 0; idx < size; idx++)
 		pC[idx] = pA[idx] * B;
@@ -21,8 +21,8 @@ void matrix_multiply_scalar::amp_impl(const Matrix& A, MatrixValue B, Matrix& C)
 }
 
 void matrix_multiply_scalar::openmp(const Matrix& A, MatrixValue B, Matrix& C) {
-	auto pA = A.values;
-	auto pC = C.values;
+	const auto pA = A.values;
+	const auto pC = C.values;
 	const auto size = A.size_x * A.size_y;
 #pragma omp parallel for
 	for (int idx = 0; idx < size; idx++)

@@ -8,8 +8,6 @@
 class Environment : public ::testing::Environment {
 public:
     ~Environment() override {}
-
-    // Override this to define how to set up the environment.
     void SetUp() override {
         using namespace concurrency;
         const auto accs = accelerator::get_all();
@@ -17,8 +15,6 @@ public:
         std::wcout << chosen_one.description << std::endl;
         bool success = accelerator::set_default(chosen_one.device_path);
     }
-
-    // Override this to define how to tear down the environment.
     void TearDown() override {}
 };
 

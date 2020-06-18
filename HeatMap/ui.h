@@ -17,7 +17,7 @@ private:
 	std::unique_ptr<std::vector<PixelData>> heat;
 private:
 	void handle_input(const sf::Event::KeyEvent& evt);
-	void handle_input(const sf::Event::MouseButtonEvent& evt);
+	void handle_mouse();
 	void update();
 	void render();
 public:
