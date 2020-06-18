@@ -24,18 +24,18 @@ void UI::handle_mouse() {
 	const auto local_coords = sf::Vector2i(coords.x / PIXEL_SIZE, coords.y / PIXEL_SIZE);
 	const auto field_idx = (local_coords.x + 1) + (local_coords.y + 1) * shadow_row_size;
 	if (isLeftPressed)
-		(*shadow_state)[field_idx] = 1;
+		(*state)[field_idx] = 1;
 	else if (isRightPressed)
-		(*shadow_state)[field_idx] = 0;
+		(*state)[field_idx] = 0;
 }
 
 void UI::update() {
-	logic::parallel_branchless_shared<8>(*shadow_state, shadow_row_size, *shadow_state_double, 1);
+	logic::parallel(*state, shadow_row_size, *state_double, 1);
 }
 
 void UI::render() {
 	window.clear();
-	const auto& pixels = *shadow_state;
+	const auto& pixels = *state;
 	for (size_t y = 1; y < end; y++) {
 		const auto y_offset = y * shadow_row_size;
 		for (size_t x = 1; x < end; x++) {
@@ -58,8 +58,8 @@ UI::UI() :
 		"Game of life demo",
 		sf::Style::Titlebar | sf::Style::Close),
 	brush(sf::Vector2f(PIXEL_SIZE, PIXEL_SIZE)),
-	shadow_state(new std::vector<PixelData>(shadow_row_size* shadow_row_size)),
-	shadow_state_double(new std::vector<PixelData>(shadow_row_size* shadow_row_size))
+	state(new std::vector<PixelData>(shadow_row_size* shadow_row_size)),
+	state_double(new std::vector<PixelData>(shadow_row_size* shadow_row_size))
 {
 	brush.setFillColor(sf::Color::Green);
 	brush.setOutlineThickness(1.0f);
@@ -67,7 +67,7 @@ UI::UI() :
 }
 
 void UI::start() {
-	while (window.isOpen()){
+	while (window.isOpen()) {
 		sf::Event event;
 		while (window.pollEvent(event)) {
 			if (event.type == sf::Event::Closed)
