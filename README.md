@@ -19,8 +19,8 @@ Used technologies:
 1. Restore NuGet packages (for Test project)
 2. Download SFML (tested on version 2.5.1)
 3. Copy folder "SFML-2.5.1" to "packages" folder
-4. Try to build
-5. Copy files from "SFML-2.5.1/bin" to release folder
-6. Run the project
+4. Build and run
 
 Currently only supported build with Visual Studio (tested on Visual C++ 15)
+SFML is linked statically.
+You can debug GPU code only when your accelerator supports debugging, otherwise debug run will throw exception.

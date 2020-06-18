@@ -4,9 +4,8 @@
 using namespace std;
 using namespace logic;
 
-double life_check(const FunctionSignature func, int size, int runs) {
-	if (size <= 0) exit(1);
-	const auto shadow_size = static_cast<size_t>(size) + 2;
+double life_check(const FunctionSignature func, size_t size, int runs) {
+	const auto shadow_size = size + 2;
 	const auto data_size = shadow_size * shadow_size;
 	unique_ptr<vector<PixelData>> A(new vector<PixelData>(data_size));
 	unique_ptr<vector<PixelData>> B(new vector<PixelData>(data_size));
