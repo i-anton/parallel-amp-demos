@@ -43,7 +43,7 @@ void UI::render() {
 				static_cast<float>(x_idx * PIXEL_SIZE),
 				static_cast<float>(y_idx * PIXEL_SIZE)
 			);
-			brush.setFillColor(sf::Color(0, pixels[i], 0));
+			brush.setFillColor(sf::Color(pixels[i], 0, 0));
 			window.draw(brush);
 		}
 		x_idx++;
@@ -62,9 +62,9 @@ UI::UI() :
 		"HeatDemo",
 		sf::Style::Titlebar | sf::Style::Close),
 	brush(sf::Vector2f(PIXEL_SIZE, PIXEL_SIZE)),
-	input(new std::vector<PixelData>(FIELD_SIZE* FIELD_SIZE)),
-	output(new std::vector<PixelData>(FIELD_SIZE* FIELD_SIZE)),
-	heat(new std::vector<PixelData>(FIELD_SIZE* FIELD_SIZE))
+	input(new std::vector<PixelData>(FIELD_SIZE * FIELD_SIZE)),
+	output(new std::vector<PixelData>(FIELD_SIZE * FIELD_SIZE)),
+	heat(new std::vector<PixelData>(FIELD_SIZE * FIELD_SIZE))
 {
 	brush.setFillColor(sf::Color::Green);
 	brush.setOutlineThickness(1.0f);

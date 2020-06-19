@@ -1,8 +1,8 @@
 #include "logic.h"
 
 void logic::sequental(PixelVector& state, int field_size, PixelVector& state_double, int iter) {
-	const auto data = &(state[0]);
-	const auto new_data = &(state_double[0]);
+	auto data = &(state[0]);
+	auto new_data = &(state_double[0]);
 	const auto size = state.size();
 	for (size_t i = 0; i < size; i++)
 		new_data[i] = data[i];
@@ -48,6 +48,7 @@ void logic::sequental(PixelVector& state, int field_size, PixelVector& state_dou
 					data[dest_idx] = 0;
 			}
 		}
+		std::swap(data, new_data);
 	}
 }
 
@@ -60,8 +61,7 @@ void logic::parallel(PixelVector& state, int field_size, PixelVector& state_doub
 	copy(state.cbegin(), state.cend(), new_buffer);
 	const auto n = field_size - 2;
 	const auto t = field_size - 1;
-	for (size_t i = 0; i < iter; i++)
-	{
+	for (size_t i = 0; i < iter; i++) {
 		parallel_for_each(extent<1>(field_size),
 			[=](index<1> idx) restrict(amp)
 			{
@@ -119,8 +119,7 @@ void logic::parallel_branchless(PixelVector& state, int field_size, PixelVector&
 	array_view<const PixelData, 2> rules_in(9, 2, rules);
 	const auto n = field_size - 2;
 	const auto t = field_size - 1;
-	for (size_t i = 0; i < iter; i++)
-	{
+	for (size_t i = 0; i < iter; i++) {
 		parallel_for_each(extent<1>(field_size),
 			[=](index<1> idx) restrict(amp)
 			{
